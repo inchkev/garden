@@ -102,9 +102,15 @@
     <p>
       This is a website because knowing that anyone can read it will hold me accountable.
     </p>
+    <p id="timestamp">
+    </p>
 
   </main>
 
+  <script>
+    var element = document.getElementById("timestamp");
+    element.innerHTML("Last updated " + document.lastModified);
+  </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </body>
 
