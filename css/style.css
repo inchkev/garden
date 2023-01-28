@@ -1,0 +1,36 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.container {
+  position: fixed;
+  margin: 0;
+
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: calc(100% - 2.5em);
+  width: 100%;
+  background-color: transparent;
+}
+
+.container * {
+  display: inline-block;
+}
+
+p {
+  margin: 0;
+}
+
+.container img {
+  margin: 1em;
+  image-rendering: pixelated;
+}
