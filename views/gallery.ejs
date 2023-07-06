@@ -5,12 +5,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>kevin.garden/<%= title %></title>
+  <title>kevin.garden<%= title %></title>
 
   <style>
     body {
-      font-size: 0.85em;
+      margin: 0;
       padding: 1em;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
       background-color: black;
       color: white;
     }
@@ -35,18 +37,20 @@
 </head>
 
 <body>
-  <p><a href="/">back</a></p>
-  <p>/</p>
+  <p><a href="..">back</a></p>
+  <p><%= title %></p>
   <div class="gallery">
 
-    <%_ multimedia.forEach(function(media) { _%>
+    <%_ files.forEach(function(file) { _%>
     <div class="item">
-      <p><%= media.name %></p>
-      <%_ if (media.type === 'image') { _%>
-      <img src="<%= media.path %>" alt="<%= media.name %>" width="<%= media.width %>" height="<%= media.height %>">
-      <%_ } else if (media.type === 'video') { _%>
-      <video width="<%= media.width %>" height="<%= media.height %>" controls>
-        <source src="<%= media.path %>" type="video/mp4">
+      <p>
+        <a href="<%= file.path %>"><%= file.name %></a> (<% if (file.type === 'directory') { %><%= file.contents %><% } else { %><%= file.size %><% } %>)
+      </p>
+      <%_ if (file.type === 'image') { _%>
+      <img src="<%= file.path %>" alt="<%= file.name %>" width="<%= file.width %>" height="<%= file.height %>">
+      <%_ } else if (file.type === 'video') { _%>
+      <video width="<%= file.width %>" height="<%= file.height %>" controls>
+        <source src="<%= file.path %>" type="video/mp4">
         Your browser does not support the video tag.
       </video>
       <%_ } _%>

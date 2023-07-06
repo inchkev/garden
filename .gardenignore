@@ -1,0 +1,12 @@
+.*
+index.html
+manifesto.html
+CNAME
+README.md
+favicon.*
+package-lock.json
+package.json
+css/
+src/
+views/
+img/

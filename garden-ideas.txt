@@ -1,0 +1,36 @@
+how do we turn a directory into a garden?
+* html is the medium
+
+extensionless files are rendered as plaintext.
+
+all files except for extensionless files are links. files are plants.
+* directories are links, denoted with a trailing forward slash.
+* extensionless files are links.
+filename and file information (e.g. size) should always be shown.
+* directories show the number of items in it
+* files show filesize
+* deal with recursion later
+* the name "index.html" may be reserved.
+
+some rich files show additional information.
+* media such as photos, videos, audio, show the information as html equivalents
+* render markdown?
+
+viewing
+* dotfiles are hidden by default
+* .gitignore is understood
+* .gardenignore is respected
+* .DS_Store is esteemed
+the default garden directory is simply "garden".
+
+
+---
+there are two views: 1) freeform and 2) grid/gallery. this is determined by the info in .DS_Store
+* sorry, windows users
+
+FREEFORM
+* if directory in finder is "icons" and sort by "none", read .DS_Store info on how to place elements.
+
+otherwise, (or if there is no .DS_STORE),
+GRID/GALLERY
+* as determined by filename lexicographical order
