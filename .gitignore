@@ -8,6 +8,8 @@
 node_modules/
 build/
 
+.vscode/*
+
 # Swap
 [._]*.s[a-v][a-z]
 [._]*.sw[a-p]
