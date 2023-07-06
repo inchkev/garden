@@ -5,7 +5,8 @@ extensionless files are rendered as plaintext.
 
 all files except for extensionless files are links. files are plants.
 * directories are links, denoted with a trailing forward slash.
-* extensionless files are links.
+* regular files are links.
+* extensionless files are treated as raw text.
 filename and file information (e.g. size) should always be shown.
 * directories show the number of items in it
 * files show filesize
