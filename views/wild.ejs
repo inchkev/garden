@@ -17,6 +17,7 @@
       height: 100%;
       //background-color: black;
       //color: white;
+      align-items: center;
     }
     body {
       box-sizing: border-box;
@@ -36,14 +37,16 @@
       font-family: inherit;
     }
     .plantbed {
-      width: 100%;
-      height: 100%;
-      //padding: 1em;
+      width: 0;
+      height: auto;
+      margin: auto;
+      position: relative;
     }
     .item {
-      display: inline-block;
-      width: 20em;
-      padding: 0.5em 0;
+      display: block;
+      position: absolute;
+      width: 18em;
+      margin: 1em 0;
     }
     .item > *,
     .item > video {
@@ -71,7 +74,7 @@
   <div class="plantbed">
 
     <%_ files.forEach(function(file) { _%>
-    <div class="item">
+    <div class="item" style="top: <%= file.location.y %>px; left: calc(<%= file.location.x %>px - 9em)">
       <%_ if (file.type === 'directory') { _%>
       <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.contents %>)</h3>
       <%_ } else if (file.type === 'image') { _%>

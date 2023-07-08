@@ -27,11 +27,16 @@ html, body {
 .container * {
   display: inline-block;
 }
+.container img {
+  margin-top: 1em;
+  image-rendering: pixelated;
+}
 
 h1, h2, h3, h4, h5, h6 {
   font-size: 1em;
   font-weight: normal;
   margin: 0;
+  color: #53A82C;
 }
 
 h2 {
@@ -42,11 +47,6 @@ p {
   margin: 0;
 }
 
-.container img {
-  margin-top: 1em;
-  image-rendering: pixelated;
-}
-
-p, a {
-  color: green;
+a {
+  color: inherit;
 }
