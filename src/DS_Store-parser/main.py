@@ -25,6 +25,7 @@ if __name__ == '__main__':
     for record in ds_store.read():
         name = record.name
         for field, data in record.fields.items():
+
             if field == 'Iloc':
                 # record.validate_type(field, data, bytes, 16)
                 if not isinstance(data, bytes) or len(data) != 16:
@@ -32,6 +33,7 @@ if __name__ == '__main__':
                 x = int.from_bytes(data[0:4], 'big', signed=False)
                 y = int.from_bytes(data[4:8], 'big', signed=False)
                 parsed[name]['Iloc'] = {'x': x, 'y': y}
+
             elif field == 'icvp':
                 # self.validate_type(field, data, bytes)
                 # yield 'Icon view property list:'
@@ -44,9 +46,10 @@ if __name__ == '__main__':
 
                 # type = 0 : Default, 1: Color, 2: Image
                 parsed[name]['icvp']['bgType'] = plistlib.loads(data)['backgroundType']
-                parsed[name]['icvp']['bgR'] = int(plistlib.loads(data)['backgroundColorRed'] * 255)
-                parsed[name]['icvp']['bgG'] = int(plistlib.loads(data)['backgroundColorGreen'] * 255)
-                parsed[name]['icvp']['bgB'] = int(plistlib.loads(data)['backgroundColorBlue'] * 255)
+                if parsed[name]['icvp']['bgType'] == 1:
+                    parsed[name]['icvp']['bgR'] = int(plistlib.loads(data)['backgroundColorRed'] * 255)
+                    parsed[name]['icvp']['bgG'] = int(plistlib.loads(data)['backgroundColorGreen'] * 255)
+                    parsed[name]['icvp']['bgB'] = int(plistlib.loads(data)['backgroundColorBlue'] * 255)
 
     sys.stdout.write(json.dumps(parsed))
     sys.stdout.flush()

@@ -5,22 +5,22 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>kevin.garden<% if (title) { %>/<%= title %><% } %></title>
+  <title>kevin.garden<% if (locals.title && title) { %>/<%= title %><% } %></title>
 
   <style>
-    body, main {
+    body {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 14px;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
+      <%_ if (locals.backgroundColor) { _%>
+      color: <%= color %>;
+      background-color: <%= backgroundColor %>;
+      <%_ } _%>
     }
-    body {
+    main {
       box-sizing: border-box;
       padding: 1.5em;
     }
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3, h4, h5, h6, p {
       font-size: 1em;
       font-weight: normal;
       margin: 0;
@@ -50,52 +50,55 @@
     a {
       color: inherit;
     }
-    p {
-      padding: 0;
-      margin: 0;
-    }
   </style>
 </head>
 
-<body<% if (locals.backgroundColor) { %> style="background-color: <%= backgroundColor %>"<% } %>>
-  <%_ if (title) { _%>
-  <h3><a href="..">back</a></h3>
-  <!-- <p><%= title %></p> -->
-  <%_ } _%>
-  <div class="plantbed">
+<body>
+  <main>
+    <%_ if (locals.title && title) { _%>
+    <h3><a href="..">back</a></h3>
+    <!-- <p><%= title %></p> -->
+    <%_ } _%>
 
-    <%_ files.forEach(function(file) { _%>
-    <div class="item">
-      <%_ if (file.type === 'directory') { _%>
-      <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.contents %>)</h3>
-      <%_ } else if (file.type === 'image') { _%>
-      <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
-      <img src="<%= file.path %>" alt="<%= file.name %>" width="<%= file.width %>" height="<%= file.height %>">
-      <%_ } else if (file.type === 'video') { _%>
-      <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
-      <video width="<%= file.width %>" height="<%= file.height %>" controls>
-        <source src="<%= file.path %>"> <!-- TODO: add type -->
-        Your browser does not support the video tag.
-      </video>
-      <%_ } else if (file.type === 'audio') { _%>
-      <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
-      <audio controls>
-        <source src="<%= file.path %>"> <!-- TODO: add type -->
-        Your browser does not support the audio tag.
-      </audio>
-      <%_ } else if (file.type === 'text') { _%>
-      <h3><a href="<%= file.path %>"><%= file.name %></a></h3>
-      <% if (file.contents) { %><pre><%= file.contents %></pre><% } %>
-      <%_ } else if (file.type === 'raw') { _%>
-      <h3><%= file.name %></h3>
-      <% if (file.contents) { %><pre><%= file.contents %></pre><% } %>
-      <%_ } else if (file.type === 'other') { _%>
-      <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
-      <%_ } _%>
+    <div class="plantbed">
+
+      <%_ files.forEach(function(file) { _%>
+      <div class="item">
+        <%_ if (file.type === 'directory') { _%>
+        <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.contents %>)</h3>
+        <%_ } else if (file.type === 'image') { _%>
+        <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
+        <img src="<%= file.path %>" alt="<%= file.name %>" width="<%= file.width %>" height="<%= file.height %>">
+        <%_ } else if (file.type === 'video') { _%>
+        <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
+        <video width="<%= file.width %>" height="<%= file.height %>" controls>
+          <source src="<%= file.path %>"> <!-- TODO: add type -->
+          Your browser does not support the video tag.
+        </video>
+        <%_ } else if (file.type === 'audio') { _%>
+        <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
+        <audio controls>
+          <source src="<%= file.path %>"> <!-- TODO: add type -->
+          Your browser does not support the audio tag.
+        </audio>
+        <%_ } else if (file.type === 'text') { _%>
+        <h3><a href="<%= file.path %>"><%= file.name %></a></h3>
+        <%_ if (file.contents) { _%>
+        <pre><%= file.contents %></pre>
+        <%_ } _%>
+        <%_ } else if (file.type === 'raw') { _%>
+        <h3><%= file.name %></h3>
+        <%_ if (file.contents) { _%>
+        <pre><%= file.contents %></pre>
+        <%_ } _%>
+        <%_ } else if (file.type === 'other') { _%>
+        <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
+        <%_ } _%>
+      </div>
+
+      <%_ }) _%>
     </div>
-
-    <%_ }) _%>
-  </div>
+  </main>
 </body>
 
 </html>

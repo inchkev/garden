@@ -21,8 +21,8 @@ const GITIGNORE = parse(await fs.readFile('.gitignore', 'utf8')).patterns;
 const GARDENIGNORE = parse(await fs.readFile('.gardenignore', 'utf8')).patterns;
 
 
+/* credit https://stackoverflow.com/a/23452742 & https://stackoverflow.com/a/58571306 */
 function parseDS_Store(path) {
-  // credit https://stackoverflow.com/a/23452742 & https://stackoverflow.com/a/58571306
   const child = spawnSync('python3', ['src/DS_Store-parser/main.py', path]);
   if (child.error) {
     return null;
@@ -30,6 +30,19 @@ function parseDS_Store(path) {
   const json = child.stdout;
   return JSON.parse(json);
 }
+
+
+/* follows https://www.w3.org/TR/WCAG20/#relativeluminancedef */
+function calculateRelativeLuminance(R8bit, G8bit, B8bit) {
+  const RsRGB = R8bit / 255;
+  const GsRGB = G8bit / 255;
+  const BsRGB = B8bit / 255;
+  const R = RsRGB <= 0.03928 ? RsRGB / 12.92 : Math.pow((RsRGB + 0.055) / 1.055, 2.4);
+  const G = GsRGB <= 0.03928 ? GsRGB / 12.92 : Math.pow((GsRGB + 0.055) / 1.055, 2.4);
+  const B = BsRGB <= 0.03928 ? BsRGB / 12.92 : Math.pow((BsRGB + 0.055) / 1.055, 2.4);
+  return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+}
+
 
 async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null) {
   var currPath = path.join(rootPath, currDir);
@@ -45,8 +58,16 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
     var renderFreeform = icvp['arrangeBy'] === 'none' || icvp['arrangeBy'] === 'grid';
     var minLocationX = Infinity;
     var maxLocationX = -Infinity;
+
+    // according to wcag 2.0 both background color and text color must be specified together
     if (icvp['bgType'] == 1) { // type = 0 : Default, 1: Color, 2: Image
       dirData.backgroundColor = `rgb(${icvp['bgR']}, ${icvp['bgG']}, ${icvp['bgB']})`;
+      // pick white or black text color based on contrast w/ background color
+      if (calculateRelativeLuminance(icvp['bgR'], icvp['bgG'], icvp['bgB']) <= 0.1791) {
+        dirData.color = 'white';
+      } else {
+        dirData.color = 'black';
+      }
     }
   }
 
@@ -55,7 +76,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
   if (files.includes('.DS_Store')) {
     dirDS_Store = parseDS_Store(path.join(currPath, '.DS_Store'));
     if (dirDS_Store) {
-      // console.log(dirDS_Store);
+      console.debug(dirDS_Store);
     } else {
       renderFreeform = false;
     }

@@ -8,6 +8,7 @@ node_modules/
 build/
 
 .vscode/*
+__pycache__/
 
 # Swap
 [._]*.s[a-v][a-z]

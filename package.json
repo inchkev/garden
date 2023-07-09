@@ -4,7 +4,14 @@
   "description": "kevin.garden",
   "main": "index.js",
   "scripts": {
-    "cultivate": "node src/cultivate.js"
+    "cultivate": "node src/cultivate.js",
+    "watch-cultivate": "npm-watch"
+  },
+  "watch": {
+    "cultivate": {
+      "patterns": [".DS_Store"],
+      "extensions": "html"
+    }
   },
   "repository": {
     "type": "git",
@@ -21,6 +28,7 @@
     "get-video-dimensions": "^1.0.0",
     "image-size": "^1.0.2",
     "micromatch": "^4.0.5",
+    "npm-watch": "^0.11.0",
     "parse-gitignore": "^2.0.0",
     "pretty-bytes": "^6.1.0"
   },
