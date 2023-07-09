@@ -1,3 +1,5 @@
+// cultivate.js by terrible.day
+
 import ejs from 'ejs';
 import { promises as fs } from 'fs';
 import getVideoDimensions from 'get-video-dimensions';
@@ -7,6 +9,12 @@ import parse from 'parse-gitignore';
 import micromatch from 'micromatch';
 import prettyBytes from 'pretty-bytes';
 import { spawnSync } from 'child_process';
+import { marked } from 'marked';
+marked.use({
+  async: true,
+  mangle: false,
+  headerIds: false,
+});
 
 
 // get __filename and __dirname
@@ -44,6 +52,7 @@ function calculateRelativeLuminance(R8bit, G8bit, B8bit) {
 }
 
 
+/* :house_with_plant: */
 async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null) {
   var currPath = path.join(rootPath, currDir);
 
@@ -76,7 +85,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
   if (files.includes('.DS_Store')) {
     dirDS_Store = parseDS_Store(path.join(currPath, '.DS_Store'));
     if (dirDS_Store) {
-      console.debug(dirDS_Store);
+      // console.debug(dirDS_Store);
     } else {
       renderFreeform = false;
     }
@@ -120,7 +129,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
       fileInfo.size = prettyBytes(stats.size, {space: false});
 
       // image
-      if (/\.(jpe?g|png)$/i.test(file)) {
+      if (/\.(jpe?g|png|gif|apng|svg|bmp|ico)$/i.test(file)) {
         fileInfo.type = 'image';
         try {
           var dimensions = await sizeOf(filePath);
@@ -138,7 +147,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
         }
 
       // video
-      } else if (/\.(mp4)$/i.test(file)) {
+      } else if (/\.(mp4|webm|ogg)$/i.test(file)) {
         fileInfo.type = 'video';
         try {
           var dimensions = await getVideoDimensions(filePath);
@@ -154,15 +163,28 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
       } else if (/\.(mp3|wav|ogg)$/i.test(file)) {
         fileInfo.type = 'audio';
 
-      // } else if (/\.(txt)$/i.test(file)){
-      //   fileInfo.type = 'text';
-      //   try {
-      //     fileInfo.contents = await fs.readFile(filePath, 'utf8');
-      //   } catch (err) {
-      //     console.log('Error reading file:', filePath);
-      //     console.log(err);
-      //     continue;
-      //   }
+      } else if (/\.(txt)$/i.test(file)){
+        // don't render text files
+        fileInfo.type = 'other';
+        try {
+          fileInfo.contents = await fs.readFile(filePath, 'utf8');
+        } catch (err) {
+          console.log('Error reading file:', filePath);
+          console.log(err);
+          continue;
+        }
+
+      // markdown
+      } else if (/\.(md)$/i.test(file)){
+        fileInfo.type = 'markdown';
+        try {
+          const contents = await fs.readFile(filePath, 'utf8');
+          fileInfo.contents = await marked(contents);
+        } catch (err) {
+          console.log('Error reading file:', filePath);
+          console.log(err);
+          continue;
+        }
 
       // other file extension
       } else if (/\.[\w]+$/.test(file)) {
@@ -218,9 +240,9 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
   try {
     await fs.writeFile(outputPath, html);
     // console.log('Read', fileCount, 'of', files.length, 'files from', currPath);
-    console.log('Read', fileCount, 'of', files.length, 'files from', 'garden/' + relativePath);
+    console.log('Read', fileCount, 'of', files.length, 'files from', 'test/' + relativePath);
     // console.log('Planted HTML file:', outputPath);
-    console.log('Planted HTML file:', 'garden/' + path.join(relativePath, 'index.html'));
+    console.log('Planted HTML file:', 'test/' + path.join(relativePath, 'index.html'));
     console.log();
   } catch (err) {
     console.log('Error planting HTML file:', outputPath);
@@ -231,7 +253,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
 }
 
 
-const gardenPath = path.join(__dirname, '..');
+const gardenPath = path.join(__dirname, '..', '');
 const dss = parseDS_Store(path.join(gardenPath, '..', '.DS_Store'));
 if (dss && 'garden' in dss) {
   cultivate(gardenPath, '', '', dss['garden']['icvp']);

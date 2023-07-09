@@ -9,7 +9,9 @@
   },
   "watch": {
     "cultivate": {
-      "patterns": [".DS_Store"],
+      "patterns": [
+        ".DS_Store"
+      ],
       "extensions": "html"
     }
   },
@@ -27,6 +29,7 @@
     "ejs": "^3.1.9",
     "get-video-dimensions": "^1.0.0",
     "image-size": "^1.0.2",
+    "marked": "^5.1.1",
     "micromatch": "^4.0.5",
     "npm-watch": "^0.11.0",
     "parse-gitignore": "^2.0.0",

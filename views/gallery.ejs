@@ -15,17 +15,18 @@
       color: <%= color %>;
       background-color: <%= backgroundColor %>;
       <%_ } _%>
-      margin: 0;
     }
     main {
       box-sizing: border-box;
-      padding: 1.5em;
+      padding: 1em;
     }
-    h1, h2, h3, h4, h5, h6, p {
+    h1, h2, h3, h4, h5, h6 {
       font-size: 1em;
       font-weight: normal;
-      margin: 0;
       color: #53A82C;
+    }
+    h1, h2, h3, h4, h5, h6, p, ol, ul {
+      margin: 0;
     }
     .plantbed {
       width: 100%;
@@ -47,6 +48,9 @@
       margin: 0;
       font-family: inherit;
       white-space: pre-wrap;
+    }
+    p {
+      margin: 0;
     }
     a {
       color: inherit;
@@ -87,6 +91,11 @@
         <%_ if (file.contents) { _%>
         <pre><%= file.contents %></pre>
         <%_ } _%>
+        <%_ } else if (file.type === 'markdown') { _%>
+        <h3><a href="<%= file.path %>"><%= file.name %></a></h3>
+        <div>
+          <%- file.contents %>
+        </div>
         <%_ } else if (file.type === 'raw') { _%>
         <h3><%= file.name %></h3>
         <%_ if (file.contents) { _%>

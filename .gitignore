@@ -6,6 +6,7 @@
 *.swp
 node_modules/
 build/
+test/
 
 .vscode/*
 __pycache__/
