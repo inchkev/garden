@@ -15,26 +15,17 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      //background-color: black;
-      //color: white;
       align-items: center;
     }
     body {
       box-sizing: border-box;
-      padding: 1em;
-    }
-    * {
-      //outline: 1px solid red;
+      padding: 1.5em;
     }
     h1, h2, h3, h4, h5, h6 {
       font-size: 1em;
       font-weight: normal;
       margin: 0;
       color: #53A82C;
-    }
-    pre {
-      margin: 0;
-      font-family: inherit;
     }
     .plantbed {
       width: 0;
@@ -45,16 +36,27 @@
     .item {
       display: block;
       position: absolute;
-      width: 18em;
       margin: 1em 0;
     }
-    .item > *,
-    .item > video {
-      width: 100%;
+    .item > * {
       height: auto;
     }
+    .item > h3,
+    .item > p,
+    .item > pre {
+      width: max-content;
+    }
+    .item > img,
+    .item > video,
     .item > audio {
-      height: 3em;
+      width: 18em;
+    }
+    .item > audio {
+      height: 2.5em;
+    }
+    pre {
+      margin: 0;
+      font-family: inherit;
     }
     a {
       color: inherit;
@@ -66,7 +68,7 @@
   </style>
 </head>
 
-<body>
+<body<% if (locals.backgroundColor) { %> style="background-color: <%= backgroundColor %>"<% } %>>
   <%_ if (title) { _%>
   <h3><a href="..">back</a></h3>
   <!-- <p><%= title %></p> -->
@@ -94,10 +96,10 @@
       </audio>
       <%_ } else if (file.type === 'text') { _%>
       <h3><a href="<%= file.path %>"><%= file.name %></a></h3>
-      <%_ if (file.contents) { _%><pre><%= file.contents %></pre><%_ } _%>
+      <% if (file.contents) { %><pre><%= file.contents %></pre><% } %>
       <%_ } else if (file.type === 'raw') { _%>
       <h3><%= file.name %></h3>
-      <%_ if (file.contents) { _%><pre><%= file.contents %></pre><%_ } _%>
+      <% if (file.contents) { %><pre><%= file.contents %></pre><% } %>
       <%_ } else if (file.type === 'other') { _%>
       <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
       <%_ } _%>

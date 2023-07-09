@@ -34,16 +34,21 @@ function parseDS_Store(path) {
 async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null) {
   var currPath = path.join(rootPath, currDir);
 
-  var renderFreeform = icvp && (icvp['arrangeBy'] === 'none' || icvp['arrangeBy'] === 'grid');
-  var minLocationX = Infinity;
-  var maxLocationX = -Infinity;
-
   var files = await fs.readdir(currPath);
   var fileCount = 0;
   var dirData = {
     title: (relativePath ? relativePath + '/' : ''),
     files: [],
   };
+
+  if (icvp) {
+    var renderFreeform = icvp['arrangeBy'] === 'none' || icvp['arrangeBy'] === 'grid';
+    var minLocationX = Infinity;
+    var maxLocationX = -Infinity;
+    if (icvp['bgType'] == 1) { // type = 0 : Default, 1: Color, 2: Image
+      dirData.backgroundColor = `rgb(${icvp['bgR']}, ${icvp['bgG']}, ${icvp['bgB']})`;
+    }
+  }
 
   // parse .DS_Store
   var dirDS_Store = undefined;

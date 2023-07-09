@@ -38,9 +38,15 @@ if __name__ == '__main__':
                 # yield from show(plistlib.loads(data), tab_depth=1)
                 if not isinstance(data, bytes):
                     continue
-                parsed[name]['icvp'] = {'arrangeBy': plistlib.loads(data)['arrangeBy']}
+                parsed[name]['icvp'] = dict()
+                parsed[name]['icvp']['arrangeBy'] = plistlib.loads(data)['arrangeBy']
                 parsed[name]['icvp']['iconSize'] = plistlib.loads(data)['iconSize']
-                # 'none' and 'grid' are both freeform
+
+                # type = 0 : Default, 1: Color, 2: Image
+                parsed[name]['icvp']['bgType'] = plistlib.loads(data)['backgroundType']
+                parsed[name]['icvp']['bgR'] = int(plistlib.loads(data)['backgroundColorRed'] * 255)
+                parsed[name]['icvp']['bgG'] = int(plistlib.loads(data)['backgroundColorGreen'] * 255)
+                parsed[name]['icvp']['bgB'] = int(plistlib.loads(data)['backgroundColorBlue'] * 255)
 
     sys.stdout.write(json.dumps(parsed))
     sys.stdout.flush()
