@@ -96,7 +96,7 @@
         <%_ } else if (file.type === 'markdown') { _%>
         <h3><a href="<%= file.path %>"><%= file.name %></a></h3>
         <div>
-          <%- file.contents %>
+          <%- file.contents _%>
         </div>
         <%_ } else if (file.type === 'raw') { _%>
         <h3><%= file.name %></h3>

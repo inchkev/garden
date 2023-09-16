@@ -160,7 +160,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
         }
 
       // audio
-      } else if (/\.(mp3|wav|ogg)$/i.test(file)) {
+      } else if (/\.(mp3|wav|ogg|m4a)$/i.test(file)) {
         fileInfo.type = 'audio';
 
       } else if (/\.(txt)$/i.test(file)){
@@ -179,7 +179,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
         fileInfo.type = 'markdown';
         try {
           const contents = await fs.readFile(filePath, 'utf8');
-          fileInfo.contents = await marked(contents);
+          fileInfo.contents = await marked.parse(contents);
         } catch (err) {
           console.log('Error reading file:', filePath);
           console.log(err);
