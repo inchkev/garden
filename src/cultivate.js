@@ -142,7 +142,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
                 (dirDS_Store && file in dirDS_Store) ? dirDS_Store[file]['icvp'] : null
             );
 
-            fileInfo.contents = (length == 0) ? 'empty' : `{length} item` + ((length > 1) ? 's' : '');
+            fileInfo.contents = (length == 0) ? 'empty' : `${length} item` + ((length > 1) ? 's' : '');
 
         } else if (stats.isFile()) {
             if (micromatch.isMatch(file, GITIGNORE) ||

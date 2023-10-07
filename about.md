@@ -1,3 +1,3 @@
-view the source code at [github.com/inchkev/garden](https://github.com/inchkev/garden)
+view & fork the source code: [github.com/inchkev/garden](https://github.com/inchkev/garden)
 
-also check out [terrible.day](https://terrible.day)
+by [terrible.day](https://terrible.day)
