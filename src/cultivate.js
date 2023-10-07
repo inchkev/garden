@@ -1,14 +1,23 @@
-// cultivate.js by terrible.day
+/* cultivate.js by kevin.garden */
 
-import ejs from 'ejs';
-import { promises as fs } from 'fs';
-import getVideoDimensions from 'get-video-dimensions';
+
+// node defaults
 import path from 'path';
-import sizeOf from 'image-size';
-import parse from 'parse-gitignore';
-import micromatch from 'micromatch';
-import prettyBytes from 'pretty-bytes';
+import { promises as fs } from 'fs';
 import { spawnSync } from 'child_process';
+
+// ejs templating
+import ejs from 'ejs';
+// get dimensions of image/videos
+import sizeOf from 'image-size';
+import getVideoDimensions from 'get-video-dimensions';
+// parse .gitignore files
+import parse from 'parse-gitignore';
+// fast glob matching
+import micromatch from 'micromatch';
+// formatting file sizes
+import prettyBytes from 'pretty-bytes';
+// markdown parsing 
 import { marked } from 'marked';
 marked.use({
     async: true,
@@ -17,16 +26,16 @@ marked.use({
 });
 
 
-// get __filename and __dirname
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
+const GARDEN_DIR = path.join(__dirname, '..')
+const TEMPLATE_DIR = path.join(GARDEN_DIR, 'views');
 
-const TEMPLATE_DIR = 'views';
-const GITIGNORE = parse(await fs.readFile('.gitignore', 'utf8')).patterns;
-const GARDENIGNORE = parse(await fs.readFile('.gardenignore', 'utf8')).patterns;
+const GITIGNORE = parse(await fs.readFile(path.join(GARDEN_DIR, '.gitignore'), 'utf8')).patterns;
+const GARDENIGNORE = parse(await fs.readFile(path.join(GARDEN_DIR, '.gardenignore'), 'utf8')).patterns;
+const DS_STORE_PARSE = path.join(GARDEN_DIR, 'src', 'DS_Store-parser', 'main.py');
 
 
 /**
@@ -37,7 +46,7 @@ const GARDENIGNORE = parse(await fs.readFile('.gardenignore', 'utf8')).patterns;
  */
 /* credit https://stackoverflow.com/a/23452742 & https://stackoverflow.com/a/58571306 */
 function parseDS_Store(path) {
-    const child = spawnSync('python3', ['src/DS_Store-parser/main.py', path]);
+    const child = spawnSync('python3', [DS_STORE_PARSE, path]);
     if (child.error) {
         return null;
     }
@@ -68,7 +77,7 @@ function calculateRelativeLuminance(R8bit, G8bit, B8bit) {
 
 
 /**
- * :house_with_plant:
+ * :house_with_garden:
  */
 async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null) {
     const currPath = path.join(rootPath, currDir);
@@ -170,6 +179,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
                     } catch (err) {
                         console.log('Error reading image:', filePath);
                         console.log(err);
+                        continue;
                     }
                     break;
 
@@ -184,6 +194,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
                     } catch (err) {
                         console.log('Error reading video:', filePath);
                         console.log(err);
+                        continue;
                     }
                     break;
 
@@ -204,6 +215,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
                     } catch (err) {
                         console.log('Error reading file:', filePath);
                         console.log(err);
+                        continue;
                     }
                     break;
 
@@ -216,6 +228,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
                     } catch (err) {
                         console.log('Error reading file:', filePath);
                         console.log(err);
+                        continue;
                     }
                     break;
 
@@ -227,6 +240,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
                     } catch (err) {
                         console.log('Error reading file:', filePath);
                         console.log(err);
+                        continue;
                     }
                     break;
 
@@ -290,12 +304,45 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
     return fileCount;
 }
 
+/**
+ * :toolbox:
+ */
+async function cultivateHelper(root) {
+    // check if directory provided is valid
+    let stats = await fs.stat(root);
+    if (!stats.isDirectory()) {
+        console.error(`invalid directory ${root}`);
+    }
+    let dirname = path.basename(root);
 
-// TODO: improve this part, add arg parsing for arbitrary directories
-const gardenPath = path.join(__dirname, '..', '');
-const dss = parseDS_Store(path.join(gardenPath, '..', '.DS_Store'));
-if (dss && 'garden' in dss) {
-    let _ = await cultivate(gardenPath, '', '', dss['garden']['icvp']);
+    // try reading the .DS_Store of the previous directory as it contains
+    // information about the current directory
+    let icvp = null;
+    try {
+        await fs.access(path.join(root, '..', '.DS_Store'));
+        let dirDS_Store = parseDS_Store(path.join(root, '..', '.DS_Store'));
+        icvp = dirDS_Store[dirname]['icvp'] ?? null;
+    } catch { }
+
+    // 🌱
+    let _ = await cultivate(root, '', '', icvp);
+}
+
+
+const usage = 'how do we turn a directory into a garden?\n' +
+    'usage:      node cultivate.js DIR\n' +
+    'options:    -h, --help       print help';
+
+if (process.argv.includes('-h') || process.argv.includes('--help')) {
+    console.log(usage);
+} else if (process.argv.length == 3) {
+    try {
+        // try getting the path the user provided
+        const resolvedPath = await fs.realpath(process.argv[2]);
+        await cultivateHelper(resolvedPath);
+    } catch (err) {
+        console.error(`invalid directory ${process.argv[2]}`);
+    }
 } else {
-    let _ = await cultivate(gardenPath);
+    console.log(usage);
 }

@@ -4,7 +4,7 @@
   "description": "kevin.garden",
   "main": "index.js",
   "scripts": {
-    "cultivate": "node src/cultivate.js",
+    "cultivate": "node src/cultivate.js .",
     "watch-cultivate": "npm-watch"
   },
   "watch": {
