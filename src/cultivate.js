@@ -154,7 +154,7 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
             fileInfo.size = prettyBytes(stats.size, {space: false});
 
             let fileType = file.includes('.') ? file.split('.').reverse()[0] : '';
-            switch (fileType) {
+            switch (fileType.toLowerCase()) {
 
                 // image
                 case 'jpeg':
