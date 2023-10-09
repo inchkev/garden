@@ -37,11 +37,11 @@
       margin: 1em 0;
       width: 24em;
     }
-    .item > * {
+    .item * {
       width: 100%;
       height: auto;
     }
-    .item > audio {
+    .item audio {
       height: 3em;
     }
     pre {
@@ -74,7 +74,9 @@
         <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.contents %>)</h3>
         <%_ } else if (file.type === 'image') { _%>
         <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
-        <img src="<%= file.path %>" alt="<%= file.name %>" width="<%= file.width %>" height="<%= file.height %>">
+        <a href="<%= file.path %>">
+          <img src="<%= file.path %>" alt="<%= file.name %>" width="<%= file.width %>" height="<%= file.height %>">
+        </a>
         <%_ } else if (file.type === 'video') { _%>
         <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
         <video width="<%= file.width %>" height="<%= file.height %>" controls>
