@@ -6,6 +6,12 @@
 npm run cultivate
 ```
 
+or, have it run in any directory:
+
+```console
+node cultivate.js DIR
+```
+
 ### plots
 
 * [kevin.garden](https://kevin.garden)
