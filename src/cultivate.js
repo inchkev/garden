@@ -105,9 +105,9 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
             dirData.backgroundColor = `rgb(${icvp['bgR']}, ${icvp['bgG']}, ${icvp['bgB']})`;
             // pick white or black text color based on contrast w/ background color
             if (calculateRelativeLuminance(icvp['bgR'], icvp['bgG'], icvp['bgB']) <= 0.1791) {
-                dirData.color = 'white';
+                dirData.textColor = 'white';
             } else {
-                dirData.color = 'black';
+                dirData.textColor = 'black';
             }
         }
     }
