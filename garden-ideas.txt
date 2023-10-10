@@ -23,15 +23,16 @@ viewing
 * .gardenignore is respected
 * .DS_Store is esteemed
 the default garden directory is simply "garden".
+* you should be able to start a garden from anywhere, though.
 
 
 ---
 there are two views: 1) freeform and 2) grid/gallery. this is determined by the info in .DS_Store
 * sorry, windows users
 
-FREEFORM
+FREEFORM (or "NATURAL".)
 * if directory in finder is "icons" and sort by "none", read .DS_Store info on how to place elements.
 
 otherwise, (or if there is no .DS_STORE),
-GRID/GALLERY
+GRID/GALLERY (or "FORMAL")
 * as determined by filename lexicographical order

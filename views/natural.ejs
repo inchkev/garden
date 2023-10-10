@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="./favicon.png">
   <title>kevin.garden<% if (locals.title && title) { %>/<%= title %><% } %></title>
 
   <style>
@@ -19,6 +20,7 @@
     main {
       box-sizing: border-box;
       padding: 1em;
+      align-items: center;
     }
     h1, h2, h3, h4, h5, h6 {
       font-size: 1em;
@@ -29,16 +31,21 @@
       margin: 0;
     }
     .plantbed {
-      width: 100%;
-      height: 100%;
+      width: 0;
+      height: auto;
+      margin: auto;
+      position: relative;
     }
     .item {
-      display: inline-block;
+      display: block;
+      position: absolute;
       margin: 1em 0;
-      width: 24em;
     }
     .item * {
-      width: 100%;
+      width: max-content;
+    }
+    .item img, .item video, .item audio {
+      width: 18em;
       height: auto;
     }
     .item audio {
@@ -63,13 +70,13 @@
   <main>
     <%_ if (locals.title && title) { _%>
     <h3><a href="..">back</a></h3>
-    <!-- <p><%= title %></p> -->
+    <p><%= title %></p>
     <%_ } _%>
 
     <div class="plantbed">
 
       <%_ files.forEach(function(file) { _%>
-      <div class="item">
+      <div class="item" style="top: <%= file.location.y %>px; left: calc(<%= file.location.x %>px - 9em)">
         <%_ if (file.type === 'directory') { _%>
         <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.contents %>)</h3>
         <%_ } else if (file.type === 'image') { _%>

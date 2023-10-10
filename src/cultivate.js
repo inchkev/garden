@@ -79,13 +79,17 @@ function calculateRelativeLuminance(R8bit, G8bit, B8bit) {
 /**
  * :house_with_garden:
  */
-async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null) {
+async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null, maxDepth = 3) {
+    if (maxDepth < 0) {
+        return 0;
+    }
+
     const currPath = path.join(rootPath, currDir);
     const files = await fs.readdir(currPath);
 
     let fileCount = 0;
     let dirData = {
-        title: (relativePath ? relativePath + '/' : ''),
+        title: (relativePath != '.' ? relativePath + '/' : ''),
         files: [],
     };
 
@@ -139,7 +143,8 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
                 currPath,
                 path.join(relativePath, file),
                 file,
-                (dirDS_Store && file in dirDS_Store) ? dirDS_Store[file]['icvp'] : null
+                (dirDS_Store && file in dirDS_Store) ? dirDS_Store[file]['icvp'] : null,
+                maxDepth - 1
             );
 
             fileInfo.contents = (length == 0) ? 'empty' : `${length} item` + ((length > 1) ? 's' : '');
@@ -285,20 +290,22 @@ async function cultivate(rootPath, relativePath = '', currDir = '', icvp = null)
     }
 
     // generate html file from associated template
-    let templatePath = path.join(TEMPLATE_DIR, renderFreeform ? 'wild.ejs' : 'gallery.ejs');
+    let templatePath = path.join(TEMPLATE_DIR, renderFreeform ? 'natural.ejs' : 'formal.ejs');
     let template = ejs.compile(await fs.readFile(templatePath, 'utf8'));
     let html = template(dirData);
     let outputPath = path.join(currPath, 'index.html');
 
     // plant html file
-    try {
-        await fs.writeFile(outputPath, html);
-        console.log('Read', fileCount, 'of', files.length, 'files from', relativePath);
-        console.log('Planted HTML file:', path.join(relativePath, 'index.html'));
+    if (fileCount > 0) {
+        try {
+            await fs.writeFile(outputPath, html);
+            console.log('Read', fileCount, 'of', files.length, 'files from', relativePath);
+            console.log('Planted', path.join(relativePath, 'index.html'), `(${renderFreeform ? 'natural' : 'formal'})`);
+        } catch (err) {
+            console.log('Error, could not plant', outputPath);
+            console.log(err);
+        }
         console.log();
-    } catch (err) {
-        console.log('Error planting HTML file:', outputPath);
-        console.log(err);
     }
 
     return fileCount;
@@ -319,13 +326,13 @@ async function cultivateHelper(root) {
     // information about the current directory
     let icvp = null;
     try {
-        await fs.access(path.join(root, '..', '.DS_Store'));
+        await fs.access(path.join(root, '..', '.DS_Store'), fs.constants.R_OK);
         let dirDS_Store = parseDS_Store(path.join(root, '..', '.DS_Store'));
         icvp = dirDS_Store[dirname]['icvp'] ?? null;
     } catch { }
 
     // 🌱
-    let _ = await cultivate(root, '', '', icvp);
+    let _ = await cultivate(root, '.', '', icvp);
 }
 
 
