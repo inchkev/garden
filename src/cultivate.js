@@ -96,6 +96,9 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
     let renderFreeform = false;
     let minLocationX = Infinity;
     let maxLocationX = -Infinity;
+    let minLocationY = Infinity;
+    let maxLocationY = -Infinity;
+    let fileLocations = [];
 
     if (icvp) {
         renderFreeform = icvp['arrangeBy'] === 'none' || icvp['arrangeBy'] === 'grid';
@@ -272,6 +275,9 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
                 };
                 minLocationX = Math.min(minLocationX, fileInfo.location.x);
                 maxLocationX = Math.max(maxLocationX, fileInfo.location.x);
+                minLocationY = Math.min(minLocationY, fileInfo.location.y);
+                maxLocationY = Math.max(maxLocationY, fileInfo.location.y);
+                fileLocations.push([location.x, location.y]);
             }
         }
 
@@ -281,12 +287,12 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
 
     // if freeform, do a hack to kinda "center" the contents
     if (renderFreeform) {
-        // subtract all by minLocationX
-        const centerShift = (maxLocationX - minLocationX) / 2.0;
+        // normalize locations
         for (let fileInfo of dirData.files) {
-            fileInfo.location.x -= minLocationX + centerShift;
-            fileInfo.location.y -= 70;
+            fileInfo.location.x -= minLocationX;
+            fileInfo.location.y -= minLocationY;
         }
+        dirData.centerOffset = (maxLocationX - minLocationX) / 2.0;
     }
 
     // generate html file from associated template
