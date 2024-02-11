@@ -6,7 +6,7 @@
 npm run cultivate
 ```
 
-or, have it run in any directory:
+or, have it sow any directory:
 
 ```console
 node cultivate.js DIR
