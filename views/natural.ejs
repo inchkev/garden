@@ -65,6 +65,9 @@
     a {
       color: inherit;
     }
+    .md h1, .md h2, .md h3, .md h4, .md h5, .md h6, .md p, .md pre {
+      margin-top: 1em;
+    }
   </style>
 </head>
 
@@ -105,7 +108,7 @@
         <%_ } _%>
         <%_ } else if (file.type === 'markdown') { _%>
         <h3><a href="<%= file.path %>"><%= file.name %></a></h3>
-        <div>
+        <div class="md">
           <%- file.contents _%>
         </div>
         <%_ } else if (file.type === 'raw') { _%>
