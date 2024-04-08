@@ -107,7 +107,7 @@
         <pre><%= file.contents %></pre>
         <%_ } _%>
         <%_ } else if (file.type === 'markdown') { _%>
-        <h3><a href="<%= file.path %>"><%= file.name %></a></h3>
+        <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
         <div class="md">
           <%- file.contents _%>
         </div>

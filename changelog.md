@@ -1,9 +1,7 @@
-10/17/23
-* added gray border around items
-
-10/9/23
-* added max recursion depth
-
-10/6/23
-* you can `node cultivate.js DIR` now!
-* just be very careful what directory you specify...
+- 4/8/24: for markdown files,
+  - display file size
+  - add `md` class to divs, add margins to inner tags
+- 10/17/23: added gray border around items
+- 10/9/23: added max recursion depth argument, defaults to 3
+- 10/6/23: you can `node cultivate.js DIR` now!
+  - just be very careful what directory you specify...
