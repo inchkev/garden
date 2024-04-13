@@ -1,3 +1,4 @@
+- 4/12/24: add text-size-adjust (and webkit equiv)
 - 4/8/24: for markdown files,
   - display file size
   - add `md` class to divs, add margins to inner tags
