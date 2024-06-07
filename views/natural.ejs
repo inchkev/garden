@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- this html file created by https://kevin.garden/src/cultivate.js -->
 
 <head>
   <meta charset="utf-8">
@@ -27,7 +28,7 @@
       overflow-x: scroll;
     }
     main {
-      width: 100%;
+      max-width: 100%;
       box-sizing: border-box;
       align-items: center;
       padding: 5em 0;
@@ -40,13 +41,13 @@
       display: block;
       position: absolute;
       padding: 0em 1em;
-      outline: 1px solid rgba(0,0,0,0.15);
+      outline: 1px solid rgba(0,0,0,0.1);
     }
     .item * {
       width: max-content;
     }
     .item img, .item video, .item audio {
-      width: 18em;
+      max-width: 18em;
       height: auto;
     }
     .item audio {

@@ -7,7 +7,7 @@ their actual finder positions within the directory.
 view—and feel free to fork—the source code at [github.com/inchkev/garden](https://github.com/inchkev/garden).<br>
 the repository paratactically hosts my personal kevin.garden, viewable<br>
 here, with the files and code that host and generate it. the .gardenignore<br>
-denylist prevents files such as favicon.png, CNAME, and node_modules/<br>
+denylist prevents files such as .gitignore and node_modules/<br>
 from being shown.
 
 by [Kevin Chen](https://kevinnchen.com)

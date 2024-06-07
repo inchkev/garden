@@ -1,13 +1,8 @@
 .*
-index.html
+*.html
 manifesto.html
 CNAME
 README.md
-favicon.*
 package-lock.json
 package.json
-css/
-img/
-old/
-src/
-views/
+stash/

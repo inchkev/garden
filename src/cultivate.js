@@ -132,7 +132,9 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
         let stats = await fs.stat(filePath);
 
         if (stats.isDirectory()) {
-            if (micromatch.isMatch(file + '/', GITIGNORE) ||
+            if (micromatch.isMatch(file, GITIGNORE) ||
+                    micromatch.isMatch(file, GARDENIGNORE) ||
+                    micromatch.isMatch(file + '/', GITIGNORE) ||
                     micromatch.isMatch(file + '/', GARDENIGNORE)) {
                 continue;
             }
