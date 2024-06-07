@@ -11,7 +11,7 @@ here, with the files and code that host and generate it. the .gardenignore<br>
 denylist prevents files such as .gitignore and node_modules/ from<br>
 being shown.
 
-kevin.garden lays almost everything visible: [src/](https://kevin.garden/src/) contains the source code,<br>
+kevin.garden lays almost everything bare: [src/](https://kevin.garden/src/) contains the source code,<br>
 and [views/](https://kevin.garden/views/) the .ejs templates that define the .htmls.
 
 
