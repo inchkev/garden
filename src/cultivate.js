@@ -1,4 +1,6 @@
-/* cultivate.js by kevin.garden */
+// cultivate.js by kevin.garden
+//
+// Kevin Chen 2024
 
 
 // node defaults
