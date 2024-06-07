@@ -82,7 +82,6 @@
     <%_ } _%>
 
     <div class="plantbed" style="left: max(0px, calc(50% - <%= centerOffset %>px - 9em))">
-
       <%_ files.forEach(function(file) { _%>
       <div class="item" style="top: <%= file.location.y %>px; left: <%= file.location.x %>px">
         <%_ if (file.type === 'directory') { _%>
@@ -123,7 +122,6 @@
         <h3><a href="<%= file.path %>"><%= file.name %></a> (<%= file.size %>)</h3>
         <%_ } _%>
       </div>
-
       <%_ }) _%>
     </div>
 
