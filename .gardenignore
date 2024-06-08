@@ -1,8 +1,11 @@
+# general
 .*
 *.html
-manifesto.html
 CNAME
 README.md
 package-lock.json
 package.json
+
+# my personal
+manifesto.html
 stash/
