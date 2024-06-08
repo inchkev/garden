@@ -219,19 +219,6 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
                     fileInfo.type = 'audio';
                     break;
 
-                // text files
-                case 'txt':
-                    // don't render text files
-                    fileInfo.type = 'other';
-                    try {
-                        fileInfo.contents = await fs.readFile(filePath, 'utf8');
-                    } catch (err) {
-                        console.log('Error reading file:', filePath);
-                        console.log(err);
-                        continue;
-                    }
-                    break;
-
                 // markdown
                 case 'md':
                     fileInfo.type = 'markdown';
@@ -257,6 +244,8 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
                     }
                     break;
 
+                // don't render text files
+                case 'txt':
                 // other
                 default:
                     fileInfo.type = 'other';

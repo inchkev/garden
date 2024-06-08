@@ -1,4 +1,17 @@
-### seeding guide for new gardeners
+kevin.garden is a site sown from files, directories, and .DS_Store.
+
+kevin.garden is also the code used to generate itself.
+
+## subjectively,
+
+- Images (jpeg, png, webp, gif, apng, svg, bmp, ico), videos (mp4, webm), and audio (mp3, wav, ogg, m4a) are displayed as their html equivalents: \<img\>, \<video\>, \<audio\>.
+- Markdown (md) files are parsed into their relevant html.
+- Files with no extension have their contents displayed. An empty extensionless file makes for a great header.
+- All other file types are direct links with no formatting.
+
+## seeding guide for new gardeners
+
+Please read this whole section if you're interested in forking kevin.garden.
 
 ```console
 how do we turn a directory into a garden?
@@ -6,7 +19,7 @@ usage:      node cultivate.js DIR
 options:    -h, --help       print help
 ```
 
-Since I have my code and my content in the same place, everywhere here, it's a bit messy if you want to fork this repo. To start fresh, all you need is to copy `package.json`, `src/` and `views/`. I didn't want to hide `src/` and `views/` on kevin.garden so those folders will have residual index.htmls inside them; pardon the dust.
+Since I have my code and my content in the same place, everywhere here, it's a bit messy if you want to fork this repo. To start fresh, all you need is to copy `package.json`, `src/` and `views/`. I didn't want to hide `src/` and `views/` on kevin.garden, so those folders will have residual index.htmls inside them; pardon the dust.
 
 In the `views/` directory are two [ejs](https://ejs.co/) templates, `natural.ejs`, and `formal.ejs`. The script selects the natural template when "Sort By > None" is selected for the directory AND every file to be displayed has been moved at least once. Otherwise, it chooses the formal template.
 
@@ -30,7 +43,7 @@ I have found that the best way to have the .DS_Store file update, and thus the `
 
 Also important to know is that the "Sort By" and background color properties of the current directory is stored in the .DS_Store file of the *previous directory*. This is not an issue when visiting subsequent directories, but does mean that the script, in `cultivateHelper()`, will attempt to read the `.DS_Store` file in the directory *before* the one you have passed in.
 
-### more
+## more
 
 - I have plans to add max resursion depth as a command line argument. I have not done that yet. For now, manually set it, or pass it in in `cultivateHelper()`.
 - The script only reads the .gardenignore and .gitignore files once, at the root directory it was invoked in. It will not listen to .gitignores within directories.
