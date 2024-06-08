@@ -16,7 +16,7 @@ kevin.garden is also the code that generates itself.
 
 ## seeding guide for new gardeners
 
-Please read this whole section if you're interested in forking kevin.garden.
+Please read this entire section if you're interested in forking kevin.garden.
 
 ```console
 how do we turn a directory into a garden?
