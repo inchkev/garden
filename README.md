@@ -9,6 +9,11 @@ kevin.garden is also the code used to generate itself.
 - Files with no extension have their contents displayed. An empty extensionless file makes for a great visual header.
 - All other file types are direct links with no formatting.
 
+### kevin.garden
+
+- Respects .gitignore and .gardenignore denylists.
+- Parses from .DS_Store file coordinates, directory view options, and background colors.
+
 ## seeding guide for new gardeners
 
 Please read this whole section if you're interested in forking kevin.garden.
@@ -35,7 +40,7 @@ package-lock.json
 package.json
 ```
 
-And please make sure `node_modules/` is also ignored somewhere (cultivate.js also reads .gitignore files), otherwise weeds (index.htmls) will find their way in many, many unwanted cracks (folders). Unless you want that.
+And please make sure `node_modules/` is also ignored somewhere (cultivate.js also reads .gitignore files), otherwise weeds (index.htmls) will find their way in many, many unwanted cracks (folders). Unless you want that. An important note is that the script only reads the .gardenignore and .gitignore files once, at the root directory it was invoked in. It will not listen to .gitignores within directories.
 
 ### taming .DS_Store
 
@@ -43,10 +48,13 @@ I have found that the best way to have the .DS_Store file update, and thus the `
 
 Also important to know is that the "Sort By" and background color properties of the current directory is stored in the .DS_Store file of the *previous directory*. This is not an issue when visiting subsequent directories, but does mean that the script, in `cultivateHelper()`, will attempt to read the `.DS_Store` file in the directory *before* the one you have passed in.
 
-## more
+### additional dependencies
+
+`cultivate.js` uses Node's `spawnSync()` to run the .DS_Store parser, an amazing Python script by [hanwenzhu](https://github.com/hanwenzhu/.DS_Store-parser). Make sure to have python 3 installed. If `python3` is not your python 3 command be sure to change it in `parseDS_Store()`.
+
+## finally
 
 - I have plans to add max resursion depth as a command line argument. I have not done that yet. For now, manually set it, or pass it in in `cultivateHelper()`.
-- The script only reads the .gardenignore and .gitignore files once, at the root directory it was invoked in. It will not listen to .gitignores within directories.
 
 ### plots
 
