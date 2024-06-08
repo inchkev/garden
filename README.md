@@ -28,7 +28,7 @@ Since I have my code and my content in the same place, everywhere here, it's a b
 
 In the `views/` directory are two [ejs](https://ejs.co/) templates, `natural.ejs`, and `formal.ejs`. The script selects the natural template when "Sort By > None" is selected for the directory AND every file to be displayed has been moved at least once. Otherwise, it chooses the formal template.
 
-By default, `npm run cultivate` runs `node src/cultivate.js .` (on the current directory). Beware where you run this! The maximum recursion depth is set to 3 but even that can easily wreak havoc.
+By default, `npm run cultivate` runs `node src/cultivate.js .` (on the current directory). Beware where you run this! The maximum recursion depth is set to 3 but even that can easily wreak havoc in the wrong directory.
 
 Before you go off cultivating everything, be sure to create a `.gardenignore` file with `.*` so that hidden files and directories (such as .git/) are not visited. My .gardenignore also includes:
 
