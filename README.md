@@ -40,7 +40,7 @@ package-lock.json
 package.json
 ```
 
-And please make sure `node_modules/` is also ignored somewhere (cultivate.js also reads .gitignore files), otherwise weeds (index.htmls) will find their way in many, many unwanted cracks (folders). Unless you want that. An important note is that the script only reads the .gardenignore and .gitignore files once, at the root directory it was invoked in. It will not listen to .gitignores within directories.
+And please make sure `node_modules/` is ignored somewhere (cultivate.js also reads .gitignore files, so there is great), otherwise index.htmls will find their way into many, many unwanted cracks (folders). Unless you want that. An important note is that the script only reads the .gardenignore and .gitignore files once, at the root directory it was invoked in. It will not listen to .gitignores within directories.
 
 ### taming .DS_Store
 
