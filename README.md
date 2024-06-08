@@ -1,6 +1,6 @@
 kevin.garden is a site sown from files, directories, and .DS_Store.
 
-kevin.garden is also the code that to generate itself.
+kevin.garden is also the code that generates itself.
 
 ## subjectively,
 
