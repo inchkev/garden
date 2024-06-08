@@ -12,7 +12,7 @@ kevin.garden is also the code that generates itself.
 ### kevin.garden
 
 - Respects .gitignore and .gardenignore denylists.
-- Parses from .DS_Store file coordinates, directory view options, and background colors.
+- Parses from the .DS_Store file coordinates, directory view options, and background colors.
 
 ## seeding guide for new gardeners
 
