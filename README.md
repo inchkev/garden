@@ -6,7 +6,7 @@ kevin.garden is also the code that generates itself.
 
 - Images (jpeg, png, webp, gif, apng, svg, bmp, ico), videos (mp4, webm), and audio (mp3, wav, ogg, m4a) are displayed as their html equivalents: \<img\>, \<video\>, \<audio\>.
 - Markdown (md) files are parsed into their relevant html.
-- A files with no extension has its name and contents displayed. An empty extensionless file makes for a great visual header.
+- A file with no extension has its name and contents displayed. An empty extensionless file makes for a great visual header.
 - All other file types are direct links with no formatting.
 
 ### kevin.garden
