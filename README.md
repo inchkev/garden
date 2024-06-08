@@ -46,7 +46,7 @@ And please make sure `node_modules/` is ignored somewhere (cultivate.js also rea
 
 I have found that the best way to have the .DS_Store file update, and thus the `cultivate.js` script to know where you have moved your files, is to first make all your updates and movements, and then delete the `index.html` file before re-running the script. Deleting a file in a directory seems to trigger an update to .DS_Store which in turn updates the location data of its contents.
 
-Also important to know is that the "Sort By" and background color properties of the current directory is stored in the .DS_Store file of the *previous directory*. This is not an issue when visiting subsequent directories, but does mean that the script, in `cultivateHelper()`, will attempt to read the `.DS_Store` file in the directory *before* the one you have passed in.
+Also important to know is that the "Sort By" and background color properties of the current directory is stored in the .DS_Store file of the *previous directory*. This is not an issue when visiting subsequent directories, but does mean that the script, in the beginning, will try to read the `.DS_Store` file in the directory *before* the root directory. This happens in `cultivateHelper()`.
 
 ### additional dependencies
 
