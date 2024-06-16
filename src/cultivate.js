@@ -39,6 +39,8 @@ const GITIGNORE = parse(await fs.readFile(path.join(GARDEN_DIR, '.gitignore'), '
 const GARDENIGNORE = parse(await fs.readFile(path.join(GARDEN_DIR, '.gardenignore'), 'utf8')).patterns;
 const DS_STORE_PARSE = path.join(GARDEN_DIR, 'src', 'DS_Store-parser', 'main.py');
 
+const TOP_PADDING_PX_FREEFORM = 50;
+
 
 /**
  * Parses a given .DS_Store file into a JSON.
@@ -284,7 +286,8 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
         // normalize locations
         for (let fileInfo of dirData.files) {
             fileInfo.location.x -= minLocationX;
-            fileInfo.location.y -= minLocationY;
+            fileInfo.location.y -= minLocationY
+            fileInfo.location.y += TOP_PADDING_PX_FREEFORM;
         }
         dirData.centerOffset = (maxLocationX - minLocationX) / 2.0;
     }
