@@ -1,6 +1,21 @@
-// cultivate.js by kevin.garden
-//
-// Kevin Chen 2024
+/*
+cultivate.js by kevin.garden
+
+Copyright (C) 2024 Kevin Chen
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 
 
 // node defaults
@@ -236,6 +251,11 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
 
                 // raw if no extension
                 case '':
+                    // skip 'LICENSE' files
+                    if (fileInfo.name === 'LICENSE') {
+                        fileInfo.type = 'other';
+                        break;
+                    }
                     fileInfo.type = 'raw';
                     try {
                         fileInfo.contents = await fs.readFile(filePath, 'utf8');
