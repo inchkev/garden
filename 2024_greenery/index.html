@@ -28,15 +28,16 @@
     }
     .item {
       display: inline-block;
-      width: 24em;
+      padding: 0em 1em;
       margin: 1em 0;
       border: 1px solid rgba(0,0,0,.1);
     }
-    .item * {
-      width: 100%;
-      height: auto;
+    .item img, .item video {
+      width: auto; height: auto;
+      max-width: 28em; max-height: 26em;
     }
     .item audio {
+      max-width: 18em;
       height: 3em;
     }
     h1, h2, h3, h4, h5, h6 {
