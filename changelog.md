@@ -1,3 +1,4 @@
+- 2/16/25: tweaked `formal.ejs` to be a bit less formal
 - 4/12/24: add text-size-adjust (and webkit equiv)
 - 4/8/24: for markdown files,
   - display file size

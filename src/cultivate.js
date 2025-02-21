@@ -321,14 +321,12 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
     // plant html file
     if (fileCount > 0) {
         try {
-            await fs.writeFile(outputPath, html);
             console.log('Read', fileCount, 'of', files.length, 'files from', relativePath);
-            console.log('Planted', path.join(relativePath, 'index.html'), `(${renderFreeform ? 'natural' : 'formal'})`);
+            await fs.writeFile(outputPath, html);
+            console.log('\tPlanted', path.join(relativePath, 'index.html'), `(${renderFreeform ? 'natural' : 'formal'})`);
         } catch (err) {
-            console.log('Error, could not plant', outputPath);
-            console.log(err);
+            console.log(`Could not plant ${outputPath}, skipping. Error:\n\t${err}`);
         }
-        console.log();
     }
 
     return fileCount;
