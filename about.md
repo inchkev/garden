@@ -15,4 +15,4 @@ kevin.garden lays almost everything bare: [src/](https://kevin.garden/src/) cont
 and [views/](https://kevin.garden/views/) the .ejs templates that define the .htmls.
 
 
-by [kevin chen](https://kevinnchen.com).
+kevin.garden is a [file.gallery](https://file.gallery) by [kevin chen](https://kevinnchen.com).
