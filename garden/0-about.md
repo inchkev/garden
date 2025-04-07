@@ -17,6 +17,7 @@ herbs
 - sage (b 3/29)
 - lemon thyme (b 3/29)
 - cilantro (s 3/30)
+- true lavender lavendula angustifolia (b 4/6)
 
 vegetables
 
@@ -25,14 +26,18 @@ vegetables
 - tomatoes
   - [i] sungold (s 2/23)
   - [d] cherry falls (s 2/23)
-  - [s] glacier (s 2/23)
+  - [s] glacier (s 2/23 t 4/6)
 - collards (s 2/24 t 3/30)
 - endives (s 2/24 rip 3/26)
+
+have seeds for but haven't seeded yet
+
+- spinach
 
 wishlist
 
 - french tarragon
-- lavender
+- pepper of some kind
 
 ## key
 
