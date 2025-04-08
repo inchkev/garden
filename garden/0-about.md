@@ -24,8 +24,8 @@ vegetables
 - mesclun lettuce (s 2/23)
 - arugula (s 2/23)
 - tomatoes
-  - [i] sungold (s 2/23)
-  - [d] cherry falls (s 2/23)
+  - [i] sungold (s 2/23 t 4/7)
+  - [d] cherry falls (s 2/23 t 4/7)
   - [s] glacier (s 2/23 t 4/6)
 - collards (s 2/24 t 3/30)
 - endives (s 2/24 rip 3/26)
