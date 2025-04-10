@@ -7,7 +7,7 @@ herbs
 - spearmint (b 3/3/24)
 - italian parsley (s 1/26 t 3/9)
 - thyme (s 1/26 t 3/22)
-- dill (s 2/23)
+- dill (s 2/23 t 4/5, s 4/9)
 - bunching onion aka scallion (s 2/23 t 3/30, s 3/30)
 - garlic chives (s 2/23)
 - shiso (c 2/5 s 3/7)
