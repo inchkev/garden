@@ -14,10 +14,10 @@ herbs
 - basil
   - genovese (s 3/7)
   - sweet thai (s 3/7)
-- sage (b 3/29)
-- lemon thyme (b 3/29)
+- sage (b 3/29 t 4/17)
+- lemon thyme (b 3/29 t 4/17)
 - cilantro (s 3/30)
-- true lavender lavendula angustifolia (b 4/6)
+- true lavender lavendula angustifolia (b 4/6 t 4/17)
 
 vegetables
 
@@ -29,10 +29,6 @@ vegetables
   - [s] glacier (s 2/23 t 4/6)
 - collards (s 2/24 t 3/30)
 - endives (s 2/24 rip 3/26)
-
-have seeds for but haven't seeded yet
-
-- spinach
 
 wishlist
 
