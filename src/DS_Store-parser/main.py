@@ -1,55 +1,56 @@
-from parse import *
 from collections import defaultdict
 import json
+import parse as dsparse
 import plistlib
 import sys
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
-        filename = sys.argv[1]
+        filepath = sys.argv[1]
     elif len(sys.argv) == 1:
         print(f'File unspecified. Use python3 {sys.argv[0]} <.DS_Store file>'
               ' to specify file. Defaulting to .DS_Store in the current'
               ' directory...', file=sys.stderr)
-        filename = '.DS_Store'
+        filepath = '.DS_Store'
     else:
         print(f'Usage: python3 {sys.argv[0]} <.DS_Store file>')
     if len(sys.argv) < 2:
-        sys.exit("Usage: python main.py <DS_STORE FILE>")
+        sys.exit("Usage: python3 main.py <DS_STORE FILE>")
 
-    with open(filename, 'rb') as file:
+    with open(filepath, 'rb') as file:
         content = file.read()
 
-    parsed = defaultdict(dict)
-    ds_store = DSStore(content)
+    result = defaultdict(dict)
+    ds_store = dsparse.DSStore(content)
     for record in ds_store.read():
-        name = record.name
-        for field, data in record.fields.items():
+        filename = record.name
 
-            if field == 'Iloc':
-                # record.validate_type(field, data, bytes, 16)
-                if not isinstance(data, bytes) or len(data) != 16:
-                    continue
-                x = int.from_bytes(data[0:4], 'big', signed=False)
-                y = int.from_bytes(data[4:8], 'big', signed=False)
-                parsed[name]['Iloc'] = {'x': x, 'y': y}
+        iloc_data = record.fields.get('Iloc')
+        if iloc_data is not None \
+                and isinstance(iloc_data, bytes) and len(iloc_data) == 16:
+            x = int.from_bytes(iloc_data[0:4], 'big', signed=False)
+            y = int.from_bytes(iloc_data[4:8], 'big', signed=False)
+            result[filename]['Iloc'] = {'x': x, 'y': y}
+        
+        icvp_data = record.fields.get('icvp')
+        if icvp_data is not None \
+                and isinstance(icvp_data, bytes):
+            icvp_dict = plistlib.loads(icvp_data, fmt=plistlib.FMT_BINARY)
 
-            elif field == 'icvp':
-                # self.validate_type(field, data, bytes)
-                # yield 'Icon view property list:'
-                # yield from show(plistlib.loads(data), tab_depth=1)
-                if not isinstance(data, bytes):
-                    continue
-                parsed[name]['icvp'] = dict()
-                parsed[name]['icvp']['arrangeBy'] = plistlib.loads(data)['arrangeBy']
-                parsed[name]['icvp']['iconSize'] = plistlib.loads(data)['iconSize']
+            backgroundType = icvp_dict.get('backgroundType')
+            result[filename]['icvp'] = {
+                'arrangeBy': icvp_dict['arrangeBy'],
+                'iconSize': icvp_dict['iconSize'],
+                'bgType': backgroundType,
+            }
 
-                # type = 0 : Default, 1: Color, 2: Image
-                parsed[name]['icvp']['bgType'] = plistlib.loads(data)['backgroundType']
-                if parsed[name]['icvp']['bgType'] == 1:
-                    parsed[name]['icvp']['bgR'] = int(plistlib.loads(data)['backgroundColorRed'] * 255)
-                    parsed[name]['icvp']['bgG'] = int(plistlib.loads(data)['backgroundColorGreen'] * 255)
-                    parsed[name]['icvp']['bgB'] = int(plistlib.loads(data)['backgroundColorBlue'] * 255)
+            # type = 0 : Default, 1: Color, 2: Image
+            if backgroundType == 1:
+                result[filename]['icvp'].update({
+                    'bgR': int(icvp_dict['backgroundColorRed'] * 255),
+                    'bgG': int(icvp_dict['backgroundColorGreen'] * 255),
+                    'bgB': int(icvp_dict['backgroundColorBlue'] * 255),
+                })
 
-    sys.stdout.write(json.dumps(parsed))
+    sys.stdout.write(json.dumps(result))
     sys.stdout.flush()

@@ -1,3 +1,4 @@
+- no longer updated here, [new location](https://github.com/inchkev/file-gallery?tab=readme-ov-file#changelog)
 - 2/16/25: tweaked `formal.ejs` to be a bit less formal
 - 4/12/24: add text-size-adjust (and webkit equiv)
 - 4/8/24: for markdown files,

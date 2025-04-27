@@ -1,19 +1,32 @@
 /*
 cultivate.js by kevin.garden
 
-Copyright (C) 2025 Kevin Chen
+Copyright (C) 2024 Kevin Chen
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 
 // node defaults
 import path from 'path';
 import { promises as fs } from 'fs';
-import { spawnSync } from 'child_process';
+import { spawn, spawnSync } from 'child_process';
 
 // ejs templating
 import ejs from 'ejs';
 // get dimensions of image/videos
-import sizeOf from 'image-size';
+import imageSize from 'image-size';
 import getVideoDimensions from 'get-video-dimensions';
 // parse .gitignore files
 import parse from 'parse-gitignore';
@@ -37,6 +50,16 @@ const __dirname = path.dirname(__filename);
 const GARDEN_DIR = path.join(__dirname, '..')
 const TEMPLATE_DIR = path.join(GARDEN_DIR, 'views');
 
+const TEMPLATE_FILES = ['natural.ejs', 'formal.ejs'];
+const COMPILED_TEMPLATES = (await Promise.all(TEMPLATE_FILES.map(async file => {
+    const templatePath = path.join(TEMPLATE_DIR, file);
+    const template = ejs.compile(await fs.readFile(templatePath, 'utf8'));
+    return { file, template };
+}))).reduce((acc, { file, template }) => {
+    acc[file] = template;
+    return acc;
+}, {});
+
 const GITIGNORE = parse(await fs.readFile(path.join(GARDEN_DIR, '.gitignore'), 'utf8')).patterns;
 const GARDENIGNORE = parse(await fs.readFile(path.join(GARDEN_DIR, '.gardenignore'), 'utf8')).patterns;
 const DS_STORE_PARSE = path.join(GARDEN_DIR, 'src', 'DS_Store-parser', 'main.py');
@@ -51,13 +74,35 @@ const TOP_PADDING_PX_FREEFORM = 50;
  * @returns {object}
  */
 /* credit https://stackoverflow.com/a/23452742 & https://stackoverflow.com/a/58571306 */
-function parseDS_Store(path) {
-    const child = spawnSync('python3', [DS_STORE_PARSE, path]);
-    if (child.error) {
-        return null;
-    }
-    const json = child.stdout;
-    return JSON.parse(json);
+async function parseDS_Store(path) {
+    return new Promise((resolve, reject) => {
+        const child = spawn('python3', [DS_STORE_PARSE, path]);
+        let json = '';
+
+        child.stdout.on('data', (data) => {
+            json += data;
+        });
+
+        child.stderr.on('data', (data) => {
+            reject(new Error(`stderr: ${data}`));
+        });
+
+        child.on('close', (code) => {
+            if (code !== 0) {
+                reject(new Error(`Process exited with code ${code}`));
+                return;
+            }
+            try {
+                resolve(JSON.parse(json));
+            } catch (error) {
+                reject(error);
+            }
+        });
+
+        child.on('error', (error) => {
+            reject(error);
+        });
+    });
 }
 
 
@@ -81,30 +126,135 @@ function calculateRelativeLuminance(R8bit, G8bit, B8bit) {
     return 0.2126 * R + 0.7152 * G + 0.0722 * B;
 }
 
+async function cultivateDirectory(fileName, dirDS_Store, currPath, relativePath, depth) {
+    // recurse! also, cultivate() returns directory length
+    const fileCount = await cultivate(
+        currPath,
+        path.join(relativePath, fileName),
+        fileName,
+        (dirDS_Store && fileName in dirDS_Store) ? dirDS_Store[fileName]['icvp'] : null,
+        depth - 1
+    );
+
+    return {
+        path: fileName + '/',
+        name: fileName + '/',
+        type: 'directory',
+        contents: (fileCount === 0) ? 'empty' : `${fileCount} item` + ((fileCount > 1) ? 's' : ''),
+    };
+}
+
+async function cultivateFile(fileName, currPath) {
+    let filePath = path.join(currPath, fileName);
+    const stats = await fs.stat(filePath);
+    const fileInfo = {
+        path: fileName,
+        name: fileName,
+        size: prettyBytes(stats.size, { space: false }),
+    };
+
+    const fileExt = fileName.includes('.') ? fileName.split('.').reverse()[0] : '';
+    switch (fileExt.toLowerCase()) {
+        // image
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+        case 'webp':
+        case 'gif':
+        case 'apng':
+        case 'svg':
+        case 'bmp':
+        case 'ico':
+            fileInfo.type = 'image';
+            try {
+                let dimensions = imageSize(filePath);
+                fileInfo.width = dimensions.width;
+                fileInfo.height = dimensions.height;
+
+                // exif quirks with jpeg orientation info
+                if (dimensions.orientation == 6 || dimensions.orientation == 8) {
+                    [fileInfo.width, fileInfo.height] = [fileInfo.height, fileInfo.width];
+                }
+            } catch (err) {
+                console.log('Error reading image:', filePath);
+                console.log(err);
+            }
+            break;
+
+        // video
+        case 'mp4':
+        case 'webm':
+            fileInfo.type = 'video';
+            try {
+                let dimensions = await getVideoDimensions(filePath);
+                fileInfo.width = dimensions.width;
+                fileInfo.height = dimensions.height;
+            } catch (err) {
+                console.log('Error reading video:', filePath);
+                console.log(err);
+            }
+            break;
+
+        // audio
+        case 'mp3':
+        case 'wav':
+        case 'ogg':
+        case 'm4a':
+            fileInfo.type = 'audio';
+            break;
+
+        // markdown
+        case 'md':
+            fileInfo.type = 'markdown';
+            try {
+                const contents = await fs.readFile(filePath, 'utf8');
+                fileInfo.contents = await marked.parse(contents);
+            } catch (err) {
+                console.log('Error reading file:', filePath);
+                console.log(err);
+            }
+            break;
+
+        // raw if no extension
+        case '':
+            // skip 'LICENSE' files
+            if (fileInfo.name === 'LICENSE') {
+                fileInfo.type = 'other';
+                break;
+            }
+            fileInfo.type = 'raw';
+            try {
+                fileInfo.contents = await fs.readFile(filePath, 'utf8');
+            } catch (err) {
+                console.log('Error reading file:', filePath);
+                console.log(err);
+            }
+            break;
+
+        // don't render text files
+        case 'txt':
+        // other
+        default:
+            fileInfo.type = 'other';
+    }
+
+    return fileInfo;
+}
+
 
 /**
  * :house_with_garden:
  */
-async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null, maxDepth = 3) {
-    if (maxDepth < 0) {
+async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null, depth = 3) {
+    if (depth < 0) {
         return 0;
     }
 
-    const currPath = path.join(rootPath, currDir);
-    const files = await fs.readdir(currPath);
-
-    let fileCount = 0;
-    let dirData = {
+    const dirData = {
         title: (relativePath != '.' ? relativePath + '/' : ''),
-        files: [],
     };
 
     let renderFreeform = false;
-    let minLocationX = Infinity;
-    let maxLocationX = -Infinity;
-    let minLocationY = Infinity;
-    let maxLocationY = -Infinity;
-    let fileLocations = [];
 
     if (icvp) {
         renderFreeform = icvp['arrangeBy'] === 'none' || icvp['arrangeBy'] === 'grid';
@@ -121,194 +271,93 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
         }
     }
 
+    const currPath = path.join(rootPath, currDir);
+    const allFileEntries = await fs.readdir(currPath, { withFileTypes: true });
+
     // parse .DS_Store
     let dirDS_Store = null;
-    if (files.includes('.DS_Store')) {
-        dirDS_Store = parseDS_Store(path.join(currPath, '.DS_Store'));
-        if (dirDS_Store) {
-            // console.debug(dirDS_Store);
-        } else {
+    if (allFileEntries.some(entry => entry.name === '.DS_Store')) {
+        dirDS_Store = await parseDS_Store(path.join(currPath, '.DS_Store'));
+        if (dirDS_Store === null) {
             renderFreeform = false;
         }
+        // console.debug(dirDS_Store);
     }
 
-    for (const file of files) {
-        let fileInfo = { path: file }
-        let filePath = path.join(currPath, file);
-        let stats = await fs.stat(filePath);
-
-        if (stats.isDirectory()) {
-            // I should just figure out how to use micromatch.
-            if (micromatch.isMatch(file, GITIGNORE) ||
-                    micromatch.isMatch(file, GARDENIGNORE) ||
-                    micromatch.isMatch(file + '/', GITIGNORE) ||
-                    micromatch.isMatch(file + '/', GARDENIGNORE)) {
+    // split into filtered directories and files
+    const directoriesToProcess = [];
+    const filesToProcess = [];
+    for (const fileEntry of allFileEntries) {
+        const fileName = fileEntry.name;
+        if (fileEntry.isDirectory()) {
+            if (micromatch.isMatch(fileName, GITIGNORE) ||
+                micromatch.isMatch(fileName, GARDENIGNORE) ||
+                micromatch.isMatch(fileName + '/', GITIGNORE) ||
+                micromatch.isMatch(fileName + '/', GARDENIGNORE)) {
                 continue;
             }
+            directoriesToProcess.push(fileName);
+        } else if (fileEntry.isFile()) {
+            if (micromatch.isMatch(fileName, GITIGNORE) ||
+                micromatch.isMatch(fileName, GARDENIGNORE)) {
+                continue;
+            }
+            filesToProcess.push(fileName);
+        }
+    }
 
-            fileInfo.type = 'directory';
-            fileInfo.name = file + '/';
-            fileInfo.path += '/';
-
-            // recurse! also, cultivate() returns directory length
-            const length = await cultivate(
-                currPath,
-                path.join(relativePath, file),
-                file,
-                (dirDS_Store && file in dirDS_Store) ? dirDS_Store[file]['icvp'] : null,
-                maxDepth - 1
+    // process them all asynchronously
+    let processedFiles = await Promise.all([
+        ...directoriesToProcess.map(async directoryName => {
+            const fileInfo = await cultivateDirectory(
+                directoryName, dirDS_Store, currPath, relativePath, depth
             );
-
-            fileInfo.contents = (length == 0) ? 'empty' : `${length} item` + ((length > 1) ? 's' : '');
-
-        } else if (stats.isFile()) {
-            if (micromatch.isMatch(file, GITIGNORE) ||
-                    micromatch.isMatch(file, GARDENIGNORE)) {
-                continue;
+            if (renderFreeform && dirDS_Store && directoryName in dirDS_Store && 'Iloc' in dirDS_Store[directoryName]) {
+                fileInfo.location = dirDS_Store[directoryName].Iloc;
             }
-
-            fileInfo.name = file;
-            fileInfo.size = prettyBytes(stats.size, {space: false});
-
-            let fileType = file.includes('.') ? file.split('.').reverse()[0] : '';
-            switch (fileType.toLowerCase()) {
-
-                // image
-                case 'jpeg':
-                case 'jpg':
-                case 'png':
-                case 'webp':
-                case 'gif':
-                case 'apng':
-                case 'svg':
-                case 'bmp':
-                case 'ico':
-                    fileInfo.type = 'image';
-                    try {
-                        let dimensions = await sizeOf(filePath);
-                        fileInfo.width = dimensions.width;
-                        fileInfo.height = dimensions.height;
-
-                        // exif quirks with orientation info
-                        if (dimensions.orientation == 6 || dimensions.orientation == 8) {
-                            [fileInfo.width, fileInfo.height] = [fileInfo.height, fileInfo.width];
-                        }
-                    } catch (err) {
-                        console.log('Error reading image:', filePath);
-                        console.log(err);
-                        continue;
-                    }
-                    break;
-
-                // video
-                case 'mp4':
-                case 'webm':
-                    fileInfo.type = 'video';
-                    try {
-                        let dimensions = await getVideoDimensions(filePath);
-                        fileInfo.width = dimensions.width;
-                        fileInfo.height = dimensions.height;
-                    } catch (err) {
-                        console.log('Error reading video:', filePath);
-                        console.log(err);
-                        continue;
-                    }
-                    break;
-
-                // audio
-                case 'mp3':
-                case 'wav':
-                case 'ogg':
-                case 'm4a':
-                    fileInfo.type = 'audio';
-                    break;
-
-                // markdown
-                case 'md':
-                    fileInfo.type = 'markdown';
-                    try {
-                        const contents = await fs.readFile(filePath, 'utf8');
-                        fileInfo.contents = await marked.parse(contents);
-                    } catch (err) {
-                        console.log('Error reading file:', filePath);
-                        console.log(err);
-                        continue;
-                    }
-                    break;
-
-                // raw if no extension
-                case '':
-                    // skip 'LICENSE' files
-                    if (fileInfo.name === 'LICENSE') {
-                        fileInfo.type = 'other';
-                        break;
-                    }
-                    fileInfo.type = 'raw';
-                    try {
-                        fileInfo.contents = await fs.readFile(filePath, 'utf8');
-                    } catch (err) {
-                        console.log('Error reading file:', filePath);
-                        console.log(err);
-                        continue;
-                    }
-                    break;
-
-                // don't render text files
-                case 'txt':
-                // other
-                default:
-                    fileInfo.type = 'other';
+            return fileInfo;
+        }),
+        ...filesToProcess.map(async fileName => {
+            const fileInfo = await cultivateFile(fileName, currPath);
+            if (renderFreeform && dirDS_Store && fileName in dirDS_Store && 'Iloc' in dirDS_Store[fileName]) {
+                fileInfo.location = dirDS_Store[fileName].Iloc;
             }
+            return fileInfo;
+        })
+    ]);
+    processedFiles.sort((a, b) => a.name.localeCompare(b.name));
+    dirData.files = processedFiles;
 
-        } else {
-            console.log('Skipping file:', filePath);
-            continue;
-        }
-
-        // renderFreeform means we've found a valid DS_Store with icon position data
-        if (renderFreeform) {
-            if (!(dirDS_Store && file in dirDS_Store && 'Iloc' in dirDS_Store[file])) {
-                // console.log('File position for', filePath, 'not found in .DS_Store, using default');
-                renderFreeform = false;
-            } else {
-                const location = dirDS_Store[file].Iloc;
-                fileInfo.location = {
-                    x: location.x,
-                    y: location.y
-                };
-                minLocationX = Math.min(minLocationX, fileInfo.location.x);
-                maxLocationX = Math.max(maxLocationX, fileInfo.location.x);
-                minLocationY = Math.min(minLocationY, fileInfo.location.y);
-                maxLocationY = Math.max(maxLocationY, fileInfo.location.y);
-                fileLocations.push([location.x, location.y]);
-            }
-        }
-
-        dirData.files.push(fileInfo);
-        fileCount++;
+    if (renderFreeform && !dirData.files.every(fileInfo => 'location' in fileInfo)) {
+        renderFreeform = false;
     }
+    const processedFileCount = dirData.files.length;
 
     // if freeform, do a hack to kinda "center" the contents
     if (renderFreeform) {
         // normalize locations
-        for (let fileInfo of dirData.files) {
+        const locationsX = dirData.files.map((fileInfo) => fileInfo.location.x);
+        const locationsY = dirData.files.map((fileInfo) => fileInfo.location.y);
+        const minLocationX = Math.min(...locationsX);
+        const maxLocationX = Math.max(...locationsX);
+        const minLocationY = Math.min(...locationsY);
+        // const maxLocationY = Math.max(...locationsY);
+        for (const fileInfo of dirData.files) {
             fileInfo.location.x -= minLocationX;
-            fileInfo.location.y -= minLocationY
+            fileInfo.location.y -= minLocationY;
             fileInfo.location.y += TOP_PADDING_PX_FREEFORM;
         }
         dirData.centerOffset = (maxLocationX - minLocationX) / 2.0;
     }
 
     // generate html file from associated template
-    let templatePath = path.join(TEMPLATE_DIR, renderFreeform ? 'natural.ejs' : 'formal.ejs');
-    let template = ejs.compile(await fs.readFile(templatePath, 'utf8'));
-    let html = template(dirData);
-    let outputPath = path.join(currPath, 'index.html');
+    const html = COMPILED_TEMPLATES[renderFreeform ? 'natural.ejs' : 'formal.ejs'](dirData);
+    const outputPath = path.join(currPath, 'index.html');
 
     // plant html file
-    if (fileCount > 0) {
+    if (processedFileCount > 0) {
         try {
-            console.log('Read', fileCount, 'of', files.length, 'files from', relativePath);
+            console.log('Read', processedFileCount, 'of', allFileEntries.length, 'files from', relativePath);
             await fs.writeFile(outputPath, html);
             console.log('\tPlanted', path.join(relativePath, 'index.html'), `(${renderFreeform ? 'natural' : 'formal'})`);
         } catch (err) {
@@ -316,7 +365,7 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
         }
     }
 
-    return fileCount;
+    return processedFileCount;
 }
 
 /**
@@ -324,23 +373,23 @@ async function cultivate(rootPath, relativePath = '.', currDir = '', icvp = null
  */
 async function cultivateHelper(root) {
     // check if directory provided is valid
-    let stats = await fs.stat(root);
+    const stats = await fs.stat(root);
     if (!stats.isDirectory()) {
         console.error(`invalid directory ${root}`);
     }
-    let dirname = path.basename(root);
+    const dirname = path.basename(root);
 
     // try reading the .DS_Store of the previous directory as it contains
     // information about the current directory
     let icvp = null;
     try {
         await fs.access(path.join(root, '..', '.DS_Store'), fs.constants.R_OK);
-        let dirDS_Store = parseDS_Store(path.join(root, '..', '.DS_Store'));
+        const dirDS_Store = await parseDS_Store(path.join(root, '..', '.DS_Store'));
         icvp = dirDS_Store[dirname]['icvp'] ?? null;
     } catch { }
 
-    // 🌱
-    let _ = await cultivate(root, '.', '', icvp);
+    // plant
+    await cultivate(root, '.', '', icvp);
 }
 
 
@@ -357,6 +406,7 @@ if (process.argv.includes('-h') || process.argv.includes('--help')) {
         await cultivateHelper(resolvedPath);
     } catch (err) {
         console.error(`invalid directory ${process.argv[2]}`);
+        console.error(err);
     }
 } else {
     console.log(usage);
