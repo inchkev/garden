@@ -1,5 +1,5 @@
 /*
-cultivate.js by kevin.garden
+cultivate.js
 
 Copyright (C) 2025 Kevin Chen
 */
