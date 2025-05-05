@@ -10,7 +10,7 @@ herbs
 - dill (s 2/23 t 4/5, s 4/9)
 - bunching onion aka scallion (s 2/23 t 3/30, s 3/30)
 - garlic chives (s 2/23)
-- shiso (c 2/5 s 3/7)
+- shiso (c 2/5 s 3/7 t 5/4)
 - basil
   - genovese (s 3/7)
   - sweet thai (s 3/7)
@@ -18,7 +18,7 @@ herbs
 - lemon thyme (b 3/29 t 4/17)
 - cilantro (s 3/30)
 - true lavender lavendula angustifolia (b 4/6 t 4/17)
-- french tarragon (b 5/4)
+- french tarragon (b+t 5/4)
 
 vegetables
 
@@ -30,7 +30,7 @@ vegetables
   - [s] glacier (s 2/23 t 4/6)
 - collards (s 2/24 t 3/30)
 - endives (s 2/24 rip 3/26)
-- fresno chile (b 5/4)
+- fresno chile (b+t 5/4)
 
 wishlist
 
@@ -42,7 +42,7 @@ wishlist
 dates
 
 - "s" = sown from seed myself, "b" = bought
-- "t" = transplanted (assume same day for bought)
+- "t" = transplanted
   - multiple indicates separate transplant dates
 - "c" = cold stratification start
 - "p" = picked a cutting from the world
