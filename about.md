@@ -2,7 +2,7 @@ kevin.garden is my personal file gallery, currently fixated on my photos.
 
 kevin.garden is a mirror of the underlying directory that hosts it. html pages<br>
 are created by a script ([cultivate.js](https://kevin.garden/src/cultivate.js)) that visits every file and parses their<br>
-file coordinates within the finder directory using data found in macOS's<br>
+file coordinates within the finder directory using data stored in macOS's<br>
 .DS_Store file. here, .DS_Store is a file that is finally esteemed.
 
 view the source images, files, and more at [github.com/inchkev/garden](https://github.com/inchkev/garden).<br>
