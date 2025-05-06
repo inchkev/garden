@@ -36,6 +36,7 @@ wishlist
 
 - ~~french tarragon~~
 - ~~pepper of some kind~~
+- ramps
 
 ## key
 
