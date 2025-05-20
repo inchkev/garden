@@ -12,6 +12,6 @@ denylist prevents files such as .gitignore and node_modules/ from<br>
 being shown.
 
 kevin.garden lays almost everything bare: [src/](src/) the source code, [views/](views/) the<br>
-templates that generate what you're seeing, [favicon.png](favicon.png) the favicon, etc.
+templates that create what you're seeing, [favicon.png](favicon.png) the favicon, etc.
 
 kevin.garden is a [file.gallery](https://file.gallery) by [kevin chen](https://kevinnchen.com).
