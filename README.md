@@ -56,6 +56,12 @@ Also important to know is that the "Sort By" and background color properties of 
 
 - I have plans to add max resursion depth as a command line argument. I have not done that yet. For now, manually set it, or pass it in in `cultivateHelper()`.
 
-### plots
+## license
 
-- [kevin.garden](https://kevin.garden)
+- `src/` — `parse.py` by [Thomas Zhu](https://github.com/hanwenzhu) is licensed under the MIT license. all other source code (in `src/`) is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+  - if modified, indicate it by adding it to the header comment, e.g. "modified by \[name\]: add jpeg xl support"
+- `views/` — all templates and their styles are licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
+  - if modified, indicate it in the attribution, e.g. "modified by \[name\]"
+- the license for site content (published images, text, etc) is specified on the website itself.
+
+for published websites, CC attribution only in the html source is sufficient. i'd appreciate a link to https://kevin.garden/ or https://file.gallery/ in the attribution. a visible reference on the website itself would be nice too. thank you!

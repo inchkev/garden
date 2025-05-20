@@ -1,4 +1,4 @@
-kevin.garden is my personal file gallery, currently fixated on my photos.
+kevin.garden is my personal file gallery, currently fixated on my garden.
 
 kevin.garden is a mirror of the underlying directory that hosts it. html pages<br>
 are created by a script ([cultivate.js](https://kevin.garden/src/cultivate.js)) that visits every file and parses their<br>
@@ -13,6 +13,5 @@ being shown.
 
 kevin.garden lays almost everything bare: [src/](src/) the source code, [views/](views/) the<br>
 .ejs templates that generate the .html, [favicon.png](favicon.png) the favicon, for example.
-
 
 kevin.garden is a [file.gallery](https://file.gallery) by [kevin chen](https://kevinnchen.com).
