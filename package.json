@@ -1,8 +1,5 @@
 {
   "name": "garden",
-  "version": "1.0.0",
-  "description": "kevin.garden",
-  "main": "index.js",
   "scripts": {
     "cultivate": "node src/cultivate.js ."
   },
@@ -11,11 +8,7 @@
     "url": "git+https://github.com/inchkev/garden.git"
   },
   "author": "Kevin Chen",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/inchkev/garden/issues"
-  },
-  "homepage": "https://github.com/inchkev/garden#readme",
+  "license": "Apache-2.0",
   "dependencies": {
     "ejs": "^3.1.9",
     "get-video-dimensions": "^1.0.0",
