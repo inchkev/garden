@@ -1,0 +1,1 @@
+all templates ([natural.ejs](natural.ejs), [formal.ejs](formal.ejs)) and<br>their styles are licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
