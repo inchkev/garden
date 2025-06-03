@@ -12,8 +12,8 @@ herbs
 - garlic chives (s 2/23)
 - shiso (c 2/5 s 3/7 t 5/4)
 - basil
-  - genovese (s 3/7)
-  - sweet thai (s 3/7)
+  - genovese (s 3/7 t 6/1)
+  - sweet thai (s 3/7 t 6/1)
 - sage (b 3/29 t 4/17)
 - lemon thyme (b 3/29 t 4/17)
 - cilantro (s 3/30)
