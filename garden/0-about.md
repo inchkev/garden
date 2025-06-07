@@ -7,16 +7,17 @@ herbs
 - spearmint (b 3/3/24)
 - italian parsley (s 1/26 t 3/9)
 - thyme (s 1/26 t 3/22)
-- dill (s 2/23 t 4/5, s 4/9)
+- dill (s 2/23 t 4/5, s 4/9 t 6/1)
 - bunching onion aka scallion (s 2/23 t 3/30, s 3/30)
-- garlic chives (s 2/23)
+- garlic chives (s 2/23) direct sown
 - shiso (c 2/5 s 3/7 t 5/4)
 - basil
   - genovese (s 3/7 t 6/1)
   - sweet thai (s 3/7 t 6/1)
 - sage (b 3/29 t 4/17)
 - lemon thyme (b 3/29 t 4/17)
-- cilantro (s 3/30)
+- cilantro (s 3/30) direct sown
+  - bolted end of may
 - true lavender lavendula angustifolia (b 4/6 t 4/17)
 - french tarragon (b+t 5/4)
 
