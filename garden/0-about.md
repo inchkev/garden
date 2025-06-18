@@ -8,7 +8,7 @@ herbs
 - italian parsley (s 1/26 t 3/9)
 - thyme (s 1/26 t 3/22)
 - dill (s 2/23 t 4/5, s 4/9 t 6/1)
-- bunching onion aka scallion (s 2/23 t 3/30, s 3/30)
+- bunching onion aka scallion (s 2/23 t 3/30, s 3/30 t 6/17)
 - garlic chives (s 2/23) direct sown
 - shiso (c 2/5 s 3/7 t 5/4)
 - basil
@@ -23,8 +23,8 @@ herbs
 
 vegetables
 
-- mesclun lettuce (s 2/23)
-- arugula (s 2/23)
+- mesclun lettuce (s 2/23 rip 6/17)
+- arugula (s 2/23 rip a while ago)
 - tomatoes
   - [i] sungold (s 2/23 t 4/7)
   - [d] cherry falls (s 2/23 t 4/7)
