@@ -1,4 +1,4 @@
-kevin.garden is a site sown from files, directories, and .DS_Store.
+kevin.garden is a website sown from files, directories, and .DS_Store.
 
 kevin.garden is the code that generates itself.
 
