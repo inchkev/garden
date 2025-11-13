@@ -2,6 +2,9 @@ kevin.garden is a site sown from files, directories, and .DS_Store.
 
 kevin.garden is also the code that generates itself.
 
+kevin.garden is [sisters](https://en.wikipedia.org/wiki/Sister_city)
+with [file.gallery](https://github.com/inchkev/file-gallery).
+
 ## subjectively,
 
 - Images (jpeg, png, webp, gif, apng, svg, bmp, ico), videos (mp4, webm), and audio (mp3, wav, ogg, m4a) are displayed as their html equivalents: \<img\>, \<video\>, \<audio\>.
