@@ -51,14 +51,6 @@ I have found that the best way to have the .DS_Store file update, and thus the `
 
 Also important to know is that the "Sort By" and background color properties of the current directory is stored in the .DS_Store file of the *previous directory*. This is not an issue when visiting subsequent directories, but does mean that the script, in the beginning, will try to read the `.DS_Store` file in the directory *before* the root directory. This happens in `cultivateHelper()`.
 
-### additional dependencies
-
-`cultivate.js` uses Node's `spawnSync()` to run the .DS_Store parser, an amazing Python script by [hanwenzhu](https://github.com/hanwenzhu/.DS_Store-parser). Make sure to have python 3 installed. If `python3` is not your python 3 command be sure to change it in `parseDS_Store()`.
-
-## finally
-
-- I have plans to add max resursion depth as a command line argument. I have not done that yet. For now, manually set it, or pass it in in `cultivateHelper()`.
-
 ## license
 
 - `src/` — `parse.py` by [Thomas Zhu](https://github.com/hanwenzhu) is licensed under the MIT license. all other source code (in `src/`) is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
