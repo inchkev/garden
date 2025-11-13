@@ -1,9 +1,12 @@
 kevin.garden is a site sown from files, directories, and .DS_Store.
 
-kevin.garden is also the code that generates itself.
+kevin.garden is the code that generates itself.
+
+kevin.garden is a file garden.
 
 kevin.garden is [sisters](https://en.wikipedia.org/wiki/Sister_city)
 with [file.gallery](https://github.com/inchkev/file-gallery).
+
 
 ## subjectively,
 
