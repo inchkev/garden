@@ -5,7 +5,7 @@ kevin.garden is the code that generates itself.
 kevin.garden is a file garden.
 
 kevin.garden is [sisters](https://en.wikipedia.org/wiki/Sister_city)
-with [file.gallery](https://github.com/inchkev/file-gallery).
+with [file.gallery](https://github.com/inchkev/file-gallery), which you should look at if you wish to start your own garden.
 
 
 ## subjectively,
@@ -62,4 +62,4 @@ Also important to know is that the "Sort By" and background color properties of 
   - if modified, indicate it in the attribution, e.g. "modified by \[name\]"
 - the license for site content (published images, text, etc) is specified on the website itself.
 
-for published websites, CC attribution only in the html source is sufficient. i'd appreciate a link to https://kevin.garden/ or https://file.gallery/ in the attribution. a visible reference on the website itself would be nice too. thank you!
+for published websites, having the CC attribution only in the html source is sufficient. i'd appreciate a link to https://kevin.garden/ or https://file.gallery/ in the attribution. a visible reference on the website itself would be nice too. thank you!
