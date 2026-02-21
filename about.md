@@ -1,4 +1,4 @@
-kevin.garden is my personal file gallery, currently fixated on my garden.
+kevin.garden is my personal file gallery.
 
 kevin.garden is a mirror of the underlying directory that hosts it. html pages<br>
 are created by a script ([cultivate.js](https://kevin.garden/src/cultivate.js)) that visits every file and parses their<br>
